@@ -9,6 +9,12 @@ import rateLimit from 'express-rate-limit';
 import { config } from './config/env.js';
 import healthRoutes from './modules/shared/routes/health.routes.js';
 import authRoutes from './modules/auth/auth.routes.js';
+import employeeRoutes from './modules/employee/employee.routes.js';
+import employeeDocumentRoutes from './modules/employeeDocument/employeeDocument.routes.js';
+import hierarchyRoutes from './modules/hierarchy/hierarchy.routes.js';
+import employeeLifecycleRoutes from './modules/employeeLifecycle/employeeLifecycle.routes.js';
+import searchRoutes from './modules/search/search.routes.js';
+import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
 import { globalErrorHandler, notFoundHandler } from './middlewares/error.middleware.js';
 import { ApiResponse } from './core/responses/index.js';
 
@@ -36,6 +42,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/employees', employeeRoutes);
+app.use('/api/v1/employee-documents', employeeDocumentRoutes);
+app.use('/api/v1/hierarchy', hierarchyRoutes);
+app.use('/api/v1/lifecycle', employeeLifecycleRoutes);
+app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 app.all('*', notFoundHandler);
 app.use(globalErrorHandler);
