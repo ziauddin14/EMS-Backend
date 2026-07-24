@@ -51,10 +51,6 @@ class AuthRepository {
     return User.findOne({ ...query, isDeleted: false });
   }
 
-  async updateRefreshToken(userId, refreshToken) {
-    return User.findOneAndUpdate({ _id: userId, isDeleted: false }, { refreshToken }, { new: true });
-  }
-
   async updateLastLogin(userId) {
     return User.findOneAndUpdate({ _id: userId, isDeleted: false }, { lastLogin: new Date() }, { new: true });
   }

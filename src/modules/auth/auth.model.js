@@ -76,10 +76,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null
     },
-    refreshToken: {
-      type: String,
-      select: false
-    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -122,7 +118,7 @@ userSchema.virtual('fullName').get(function() {
 });
 
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password') && !this.isModified('refreshToken')) {
+  if (!this.isModified('password')) {
     return next();
   }
 
@@ -133,11 +129,6 @@ userSchema.pre('save', async function(next) {
       this.passwordChangedAt = new Date();
     }
 
-    if (this.isModified('refreshToken') && this.refreshToken) {
-      const salt = await bcrypt.genSalt(10);
-      this.refreshToken = await bcrypt.hash(this.refreshToken, salt);
-    }
-
     next();
   } catch (error) {
     next(error);
@@ -146,10 +137,6 @@ userSchema.pre('save', async function(next) {
 
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
-};
-
-userSchema.methods.compareRefreshToken = async function(candidateToken) {
-  return bcrypt.compare(candidateToken, this.refreshToken);
 };
 
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
@@ -172,7 +159,6 @@ userSchema.statics.findByIdWithPassword = function(id) {
 userSchema.methods.toJSON = function() {
   const user = this.toObject();
   delete user.password;
-  delete user.refreshToken;
   delete user.__v;
   return user;
 };

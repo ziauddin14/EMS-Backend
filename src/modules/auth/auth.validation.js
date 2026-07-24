@@ -38,14 +38,20 @@ export const updateProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name cannot exceed 50 characters').optional(),
   lastName: z.string().min(1, 'Last name is required').max(50, 'Last name cannot exceed 50 characters').optional(),
   phone: z.string().optional(),
-  avatar: z.string().optional()
+  avatar: z.object({
+    public_id: z.string().optional(),
+    url: z.string().optional()
+  }).optional()
 });
 
 export const updateUserSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name cannot exceed 50 characters').optional(),
   lastName: z.string().min(1, 'Last name is required').max(50, 'Last name cannot exceed 50 characters').optional(),
   phone: z.string().optional(),
-  avatar: z.string().optional(),
+  avatar: z.object({
+    public_id: z.string().optional(),
+    url: z.string().optional()
+  }).optional(),
   role: z.enum(Object.values(USER_ROLES)).optional(),
   status: z.enum(Object.values(USER_STATUS)).optional(),
   isActive: z.boolean().optional(),

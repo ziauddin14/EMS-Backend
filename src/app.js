@@ -8,6 +8,7 @@ import xss from 'xss-clean';
 import rateLimit from 'express-rate-limit';
 import { config } from './config/env.js';
 import healthRoutes from './modules/shared/routes/health.routes.js';
+import authRoutes from './modules/auth/auth.routes.js';
 import { globalErrorHandler, notFoundHandler } from './middlewares/error.middleware.js';
 import { ApiResponse } from './core/responses/index.js';
 
@@ -34,6 +35,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1', healthRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 app.all('*', notFoundHandler);
 app.use(globalErrorHandler);
