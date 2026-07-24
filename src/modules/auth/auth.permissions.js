@@ -1,0 +1,113 @@
+import { USER_ROLES } from './auth.constants.js';
+
+export const PERMISSIONS = {
+  USER_CREATE: 'user:create',
+  USER_READ: 'user:read',
+  USER_UPDATE: 'user:update',
+  USER_DELETE: 'user:delete',
+  USER_MANAGE: 'user:manage',
+  EMPLOYEE_CREATE: 'employee:create',
+  EMPLOYEE_READ: 'employee:read',
+  EMPLOYEE_UPDATE: 'employee:update',
+  EMPLOYEE_DELETE: 'employee:delete',
+  ATTENDANCE_MANAGE: 'attendance:manage',
+  ATTENDANCE_READ: 'attendance:read',
+  WORK_MANAGE: 'work:manage',
+  WORK_READ: 'work:read',
+  REPORT_READ: 'report:read',
+  REPORT_GENERATE: 'report:generate',
+  DASHBOARD_VIEW: 'dashboard:view',
+  NOTIFICATION_MANAGE: 'notification:manage',
+  MEETING_CREATE: 'meeting:create',
+  MEETING_READ: 'meeting:read',
+  MEETING_UPDATE: 'meeting:update',
+  MEETING_DELETE: 'meeting:delete',
+  SETTINGS_MANAGE: 'settings:manage',
+  ROLE_MANAGE: 'role:manage',
+  DEPARTMENT_MANAGE: 'department:manage',
+  DESIGNATION_MANAGE: 'designation:manage'
+};
+
+export const ROLE_PERMISSIONS = {
+  [USER_ROLES.SUPER_ADMIN]: Object.values(PERMISSIONS),
+  [USER_ROLES.CEO]: [
+    PERMISSIONS.USER_READ,
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.WORK_READ,
+    PERMISSIONS.REPORT_READ,
+    PERMISSIONS.REPORT_GENERATE,
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.MEETING_READ,
+    PERMISSIONS.MEETING_CREATE
+  ],
+  [USER_ROLES.HR_MANAGER]: [
+    PERMISSIONS.USER_CREATE,
+    PERMISSIONS.USER_READ,
+    PERMISSIONS.USER_UPDATE,
+    PERMISSIONS.EMPLOYEE_CREATE,
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.EMPLOYEE_UPDATE,
+    PERMISSIONS.EMPLOYEE_DELETE,
+    PERMISSIONS.ATTENDANCE_MANAGE,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.REPORT_READ,
+    PERMISSIONS.REPORT_GENERATE,
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.NOTIFICATION_MANAGE,
+    PERMISSIONS.MEETING_READ,
+    PERMISSIONS.MEETING_CREATE,
+    PERMISSIONS.ROLE_MANAGE,
+    PERMISSIONS.DEPARTMENT_MANAGE,
+    PERMISSIONS.DESIGNATION_MANAGE
+  ],
+  [USER_ROLES.PROJECT_MANAGER]: [
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.WORK_MANAGE,
+    PERMISSIONS.WORK_READ,
+    PERMISSIONS.REPORT_READ,
+    PERMISSIONS.REPORT_GENERATE,
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.MEETING_READ,
+    PERMISSIONS.MEETING_CREATE,
+    PERMISSIONS.MEETING_UPDATE
+  ],
+  [USER_ROLES.TEAM_LEAD]: [
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.WORK_MANAGE,
+    PERMISSIONS.WORK_READ,
+    PERMISSIONS.REPORT_READ,
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.MEETING_READ
+  ],
+  [USER_ROLES.EMPLOYEE]: [
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.WORK_READ,
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.MEETING_READ
+  ],
+  [USER_ROLES.INTERN]: [
+    PERMISSIONS.EMPLOYEE_READ,
+    PERMISSIONS.ATTENDANCE_READ,
+    PERMISSIONS.WORK_READ,
+    PERMISSIONS.DASHBOARD_VIEW
+  ]
+};
+
+export const hasPermission = (role, permission) => {
+  const rolePermissions = ROLE_PERMISSIONS[role];
+  return rolePermissions ? rolePermissions.includes(permission) : false;
+};
+
+export const hasAnyPermission = (role, permissions) => {
+  const rolePermissions = ROLE_PERMISSIONS[role];
+  return rolePermissions ? permissions.some(perm => rolePermissions.includes(perm)) : false;
+};
+
+export const hasAllPermissions = (role, permissions) => {
+  const rolePermissions = ROLE_PERMISSIONS[role];
+  return rolePermissions ? permissions.every(perm => rolePermissions.includes(perm)) : false;
+};
