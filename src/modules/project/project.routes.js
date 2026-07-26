@@ -1,0 +1,41 @@
+import express from 'express';
+import projectController from './project.controller.js';
+import { authenticate } from '../auth/auth.middleware.js';
+import { requirePermission } from '../auth/permission.middleware.js';
+
+const router = express.Router();
+
+router.get('/', authenticate, projectController.getAll);
+router.get('/active', authenticate, projectController.getActive);
+router.get('/archived', authenticate, projectController.getArchived);
+router.get('/overdue', authenticate, projectController.getOverdue);
+router.get('/upcoming', authenticate, projectController.getUpcoming);
+router.get('/statistics', authenticate, projectController.getStatistics);
+router.get('/search', authenticate, projectController.search);
+router.get('/department/:departmentId', authenticate, projectController.getByDepartment);
+router.get('/manager/:managerId', authenticate, projectController.getByProjectManager);
+router.get('/member/:employeeId', authenticate, projectController.getByMember);
+router.get('/status/:status', authenticate, projectController.getByStatus);
+router.get('/priority/:priority', authenticate, projectController.getByPriority);
+router.get('/:id', authenticate, projectController.getById);
+router.post('/', authenticate, requirePermission('project.create'), projectController.create);
+router.patch('/:id', authenticate, requirePermission('project.update'), projectController.update);
+router.delete('/:id', authenticate, requirePermission('project.delete'), projectController.delete);
+router.patch('/restore/:id', authenticate, requirePermission('project.delete'), projectController.restore);
+router.post('/:id/members', authenticate, requirePermission('project.update'), projectController.addMember);
+router.delete('/:id/members', authenticate, requirePermission('project.update'), projectController.removeMember);
+router.post('/:id/team-leads', authenticate, requirePermission('project.update'), projectController.addTeamLead);
+router.delete('/:id/team-leads', authenticate, requirePermission('project.update'), projectController.removeTeamLead);
+router.patch('/:id/archive', authenticate, requirePermission('project.update'), projectController.archive);
+router.patch('/:id/unarchive', authenticate, requirePermission('project.update'), projectController.unarchive);
+router.patch('/:id/assign-manager', authenticate, requirePermission('project.update'), projectController.assignManager);
+router.post('/:id/assign-members', authenticate, requirePermission('project.update'), projectController.assignMembers);
+router.delete('/:id/remove-members', authenticate, requirePermission('project.update'), projectController.removeMembers);
+router.post('/:id/assign-team-leads', authenticate, requirePermission('project.update'), projectController.assignTeamLeads);
+router.delete('/:id/remove-team-leads', authenticate, requirePermission('project.update'), projectController.removeTeamLeads);
+router.patch('/:id/activate', authenticate, requirePermission('project.update'), projectController.activate);
+router.patch('/:id/deactivate', authenticate, requirePermission('project.update'), projectController.deactivate);
+router.get('/:id/health', authenticate, projectController.getHealth);
+router.get('/:id/timeline', authenticate, projectController.getTimeline);
+
+export default router;

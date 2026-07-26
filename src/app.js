@@ -15,6 +15,9 @@ import hierarchyRoutes from './modules/hierarchy/hierarchy.routes.js';
 import employeeLifecycleRoutes from './modules/employeeLifecycle/employeeLifecycle.routes.js';
 import searchRoutes from './modules/search/search.routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
+import { attendanceRoutes, officeShiftRoutes, attendancePolicyRoutes } from './modules/attendance/index.js';
+import attendanceDashboardRoutes from './modules/attendance/attendance.dashboard.routes.js';
+import { projectRoutes, taskRoutes, worklogRoutes, dashboardRoutes as taskDashboardRoutes, reportsRoutes, analyticsRoutes } from './modules/task/index.js';
 import { globalErrorHandler, notFoundHandler } from './middlewares/error.middleware.js';
 import { ApiResponse } from './core/responses/index.js';
 
@@ -48,6 +51,16 @@ app.use('/api/v1/hierarchy', hierarchyRoutes);
 app.use('/api/v1/lifecycle', employeeLifecycleRoutes);
 app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/attendance', attendanceRoutes);
+app.use('/api/v1/office-shifts', officeShiftRoutes);
+app.use('/api/v1/attendance-policies', attendancePolicyRoutes);
+app.use('/api/v1/attendance', attendanceDashboardRoutes);
+app.use('/api/v1/projects', projectRoutes);
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/worklogs', worklogRoutes);
+app.use('/api/v1/task-dashboard', taskDashboardRoutes);
+app.use('/api/v1/reports', reportsRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
 
 app.all('*', notFoundHandler);
 app.use(globalErrorHandler);
